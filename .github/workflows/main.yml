@@ -10,23 +10,22 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npx playwright install     
-      - run: npm i
-      - run: npm run run:tests
-  
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # You can change this to match your project's Node.js version
+    
+    - name: Install browsers
+      run: npx playwright install
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm run run:tests
